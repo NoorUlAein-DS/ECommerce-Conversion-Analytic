@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import matplotlib.pyplot as plt
-import seaborn as sns
+import plotly.graph_objects as go
 
 # Define Executive Color Palette
 COLOR_TEAL = "#97B2AE"
@@ -106,9 +105,9 @@ with col_inputs:
         admin = 0; admin_dur = 0.0; info = 0; info_dur = 0.0; prod_rel = 10; prod_rel_dur = 200.0; special_day = 0.0
         op_sys = 2; browser = 2; region = 1
 
-# Predictive Analysis and Sigmoid Mathematical Visualization
+# Predictive Analysis and Interactive 3D Vector Visualization
 with col_outputs:
-    st.subheader("Model Inference and Probability Curve")
+    st.subheader("Model Inference and 3D Multi-Variable Space")
     
     if model is not None and le_month is not None:
         try:
@@ -135,26 +134,49 @@ with col_outputs:
         """, unsafe_allow_html=True)
         st.write("")
 
-        # Dynamic Plot Formulation
-        fig, ax = plt.subplots(figsize=(6, 3.5))
-        fig.patch.set_facecolor(COLOR_WHITE)
-        ax.set_facecolor("#FFFFFF")
+        # 3D Math Space Generation (Simulating Sigmoid Surface using Page Values and Exit Rates)
+        x_space = np.linspace(0, 300, 50)
+        y_space = np.linspace(0, 0.2, 50)
+        X_mesh, Y_mesh = np.meshgrid(x_space, y_space)
         
-        x_curve = np.linspace(0, max(100, page_values * 2), 200)
-        y_curve = 1 / (1 + np.exp(-0.1 * (x_curve - 30))) 
-        
-        ax.plot(x_curve, y_curve, color=COLOR_PEACH, linewidth=3, label="Logistic S-Curve")
-        ax.scatter([page_values], [probability], color=COLOR_TEAL, s=150, zorder=5, label="Current Shopper State")
-        
-        ax.set_title("Real-Time Sigmoid Distribution", fontsize=10, color="#2C3E50", weight='bold')
-        ax.set_xlabel("Page Values", fontsize=8)
-        ax.set_ylabel("Conversion Probability", fontsize=8)
-        ax.set_yticks([0.0, 0.5, 1.0])
-        ax.grid(True, linestyle="--", alpha=0.3, color=COLOR_BEIGE)
-        ax.legend(fontsize=7, facecolor=COLOR_WHITE)
-        sns.despine(ax=ax)
-        
-        st.pyplot(fig)
+        # Mathematical approximation matching the multi-variable vector trends
+        Z_mesh = 1 / (1 + np.exp(-0.05 * (X_mesh - 40) + 15 * Y_mesh))
+
+        # Building the Interactive 3D Plotly Figure
+        fig = go.Figure()
+
+        # Add 3D Surface
+        fig.add_trace(go.Surface(
+            x=X_mesh, y=Y_mesh, z=Z_mesh,
+            colorscale=[[0, COLOR_PINK], [0.5, COLOR_PEACH], [1, COLOR_TEAL]],
+            opacity=0.8,
+            showscale=False,
+            name="Sigmoid Probability Plane"
+        ))
+
+        # Add Active User 3D Coordinates
+        fig.add_trace(go.Scatter3d(
+            x=[page_values], y=[exit_rates], z=[probability],
+            mode='markers',
+            marker=dict(size=10, color='#2C3E50', symbol='circle', opacity=1.0),
+            name="Current Shopper State"
+        ))
+
+        # Design and Layout adjustments for 3D Presentation
+        fig.update_layout(
+            title=dict(text="Real-Time 3D Sigmoid Surface Mapping", font=dict(size=14, color="#2C3E50", family="sans-serif")),
+            scene=dict(
+                xaxis=dict(title='Page Values', backgroundcolor=COLOR_WHITE, gridcolor=COLOR_BEIGE, showbackground=True),
+                yaxis=dict(title='Exit Rates', backgroundcolor=COLOR_WHITE, gridcolor=COLOR_BEIGE, showbackground=True),
+                zaxis=dict(title='Probability', backgroundcolor=COLOR_WHITE, gridcolor=COLOR_BEIGE, showbackground=True, range=[0, 1])
+            ),
+            margin=dict(l=0, r=0, b=0, t=40),
+            height=450,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)'
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
         
         # Interpretive Verdict Section
         if prediction == 1:
