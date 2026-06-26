@@ -1,6 +1,4 @@
-%%writefile requirements.txt
 streamlit
 pandas
 numpy
-
 scikit-learn
