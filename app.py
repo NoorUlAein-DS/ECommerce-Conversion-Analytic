@@ -74,7 +74,33 @@ with col_inputs:
             visitor_type = st.selectbox("Visitor Type", ['Returning_Visitor', 'New_Visitor', 'Other'])
         with col_sub2:
             weekend = st.selectbox("Weekend Session?", ['False', 'True'])
-            traffic_type = st.number_input("Traffic Type ID", min_value=1, max_value=20, value=1)
+            
+            # Professional Traffic Channel Mapping Dictionary
+            traffic_channels = {
+                "Direct Traffic (ID 1)": 1,
+                "Google Organic Search (ID 2)": 2,
+                "Paid PPC Marketing (ID 3)": 3,
+                "Social Media Ads (ID 4)": 4,
+                "Email Campaigns (ID 5)": 5,
+                "Affiliate Referral Networks (ID 6)": 6,
+                "Partner Website Portals (ID 7)": 7,
+                "Banner Display Ads (ID 8)": 8,
+                "Third Party Blogs (ID 9)": 9,
+                "Sponsored Newsletters (ID 10)": 10,
+                "Internal Promotion Link (ID 11)": 11,
+                "Retargeting Ad Campaign (ID 12)": 12,
+                "Direct SMS Marketing (ID 13)": 13,
+                "Video Platform Link (ID 14)": 14,
+                "Influencer Promo Link (ID 15)": 15,
+                "External Community Forum (ID 16)": 16,
+                "Seasonal Event Traffic (ID 17)": 17,
+                "Co-Branded Media Content (ID 18)": 18,
+                "Push Notification Alert (ID 19)": 19,
+                "Other Miscellaneous Channels (ID 20)": 20
+            }
+            
+            selected_channel_name = st.selectbox("Traffic Channel", list(traffic_channels.keys()))
+            traffic_type = traffic_channels[selected_channel_name]
 
         # Vector baseline padding features (Defaulted to maintain strict array dimension integrity)
         admin = 0; admin_dur = 0.0; info = 0; info_dur = 0.0; prod_rel = 10; prod_rel_dur = 200.0; special_day = 0.0
