@@ -52,7 +52,7 @@ model, le_month = load_artifacts()
 
 # Dashboard Header
 st.title("E-Commerce Shopper Intention Analytics")
-st.markdown("An advanced AI framework powered by Logistic Regression to predict user purchase conversions based on real-time browsing behavior.")
+st.markdown("Developed By Aein")
 st.write("---")
 
 # Layout Split
